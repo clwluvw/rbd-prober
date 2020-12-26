@@ -24,10 +24,11 @@ def main():
 
     rbd_prober.start()
 
-
-if __name__ == "__main__":
-    main()
     app_dispatch = DispatcherMiddleware(app, {
         '/metrics': make_wsgi_app()
     })
     run_simple('0.0.0.0', 8000, app_dispatch)
+
+
+if __name__ == "__main__":
+    main()
