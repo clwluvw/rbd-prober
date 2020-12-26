@@ -12,7 +12,7 @@ class Prober(object):
         self.type = kwargs.get('type')
         self._validate_type()
         self.object_size = int(kwargs.get('object_size'))
-        
+
     def _validate_type(self):
         if self.type != 'write' and self.type != 'read':
             raise TypeError("prober type should be one of the write or read")
@@ -28,7 +28,7 @@ class RBDProber(object):
         self.rbd_user = kwargs.get('rbd_user')
         self.rbd_keyring_path = kwargs.get('rbd_keyring_path')
         self.monitors = kwargs.get('monitors')
-        
+
         rados_connection = self._connect_to_rados()
         self.image_ioctx = self._open_image(rados_connection)
 
@@ -40,7 +40,7 @@ class RBDProber(object):
         })
         cluster.connect()
         return cluster
-    
+
     def _open_image(self, rados_connection):
         ioctx = rados_connection.open_ioctx(self.pool_name)
         return rbd.Image(ioctx, self.image_name)
@@ -56,7 +56,7 @@ class RBDProber(object):
                 response_time = self.read()
         except InternalError:
             return
-        
+
         logger.info(f"probbing finished response_time: {response_time}")
 
     def write(self):
@@ -80,7 +80,8 @@ class RBDProber(object):
         logger.debug(f"write finished data_size: {n}")
 
         response_time = (end_time - start_time).total_seconds()
-        logger.debug(f"response time calculated response_time: {response_time}")
+        logger.debug(f"response time calculated \
+                    response_time: {response_time}")
         return response_time
 
     def read(self):
@@ -104,5 +105,6 @@ class RBDProber(object):
         logger.debug("read finished")
 
         response_time = (end_time - start_time).total_seconds()
-        logger.debug(f"response time calculated response_time: {response_time}")
+        logger.debug(f"response time calculated \
+                    response_time: {response_time}")
         return response_time
