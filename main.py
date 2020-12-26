@@ -1,12 +1,15 @@
 import yaml
 import argparse
-import time
 
-from loguru import logger
-from prometheus_client import start_wsgi_server
+from flask import Flask
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.serving import run_simple
+from prometheus_client import make_wsgi_app
 
 from rbd_prober.prober import RBDProber
 
+
+app = Flask(__name__)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -20,9 +23,9 @@ def main():
 
     rbd_prober.start()
 
-    logger.info("start listening to port 8000")
-    start_wsgi_server(8000)
-
-
 if __name__ == "__main__":
     main()
+    app_dispatch = DispatcherMiddleware(app, {
+        '/metrics': make_wsgi_app()
+    })
+    run_simple('0.0.0.0', 8000, app_dispatch)
