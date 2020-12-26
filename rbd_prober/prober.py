@@ -1,10 +1,13 @@
 from loguru import logger
 from datetime import datetime
+import threading
+import time
 
 import rados
 import rbd
 
 from .exceptions import InternalError
+from .exporter import PrometheusExporter
 
 
 class Prober(object):
@@ -18,8 +21,10 @@ class Prober(object):
             raise TypeError("prober type should be one of the write or read")
 
 
-class RBDProber(object):
+class RBDProber(threading.Thread):
     def __init__(self, *args, **kwargs):
+        super(RBDProber, self).__init__()
+
         self.name = kwargs.get('name')
         self.interval = kwargs.get('interval')
         self.prober = Prober(**kwargs.get('prober'))
@@ -31,6 +36,8 @@ class RBDProber(object):
 
         rados_connection = self._connect_to_rados()
         self.image_ioctx = self._open_image(rados_connection)
+
+        self._init_prometheus_exporter()
 
     def _connect_to_rados(self):
         cluster = rados.Rados(rados_id=self.rbd_user, conf={
@@ -44,6 +51,22 @@ class RBDProber(object):
     def _open_image(self, rados_connection):
         ioctx = rados_connection.open_ioctx(self.pool_name)
         return rbd.Image(ioctx, self.image_name)
+    
+    def _init_prometheus_exporter(self):
+        label_values = {
+            'name': self.name,
+            'object_size': self.prober.object_size,
+            'type': self.prober.type,
+            'pool': self.pool_name,
+            'image': self.image_name,
+        }
+        self.prometheus_exporter = PrometheusExporter.getInstance(label_values)
+    
+    def run(self):
+        while True:
+            logger.debug(f"sleep {self.interval}")
+            time.sleep(self.interval)
+            self.probe()
 
     def probe(self):
         logger.debug("start probing")
@@ -57,7 +80,7 @@ class RBDProber(object):
         except InternalError:
             return
 
-        logger.info(f"probbing finished response_time: {response_time}")
+        self.prometheus_exporter.observe(response_time, self.prober.object_size)
 
     def write(self):
         logger.debug("start write probe")
