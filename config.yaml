@@ -1,0 +1,13 @@
+name: "fsw1"
+interval: 5
+prober:
+  object_size: 4096
+  type: "write"
+pool_name: "watchdog"
+image_name: "foo"
+rbd_user: "watchdog"
+rbd_keyring_path: "/etc/ceph/ceph.client.watchdog.keyring"
+monitors:
+  - 192.168.51.181
+  - 192.168.51.182
+  - 192.168.51.183
