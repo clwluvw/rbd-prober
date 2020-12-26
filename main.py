@@ -11,6 +11,7 @@ from rbd_prober.prober import RBDProber
 
 app = Flask(__name__)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str,
@@ -22,6 +23,7 @@ def main():
         rbd_prober = RBDProber(**configs)
 
     rbd_prober.start()
+
 
 if __name__ == "__main__":
     main()

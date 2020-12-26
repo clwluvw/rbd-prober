@@ -1,6 +1,7 @@
 from prometheus_client import Histogram, Counter
 from prometheus_client.utils import INF
 
+
 class PrometheusExporter(object):
     __instance = None
     LABELS = [
@@ -15,17 +16,17 @@ class PrometheusExporter(object):
 
     @staticmethod
     def getInstance(label_values):
-        if PrometheusExporter.__instance == None:
+        if PrometheusExporter.__instance is None:
             PrometheusExporter(label_values)
         return PrometheusExporter.__instance
-    
+
     def __init__(self, label_values, *args, **kwargs):
-        if PrometheusExporter.__instance != None:
+        if PrometheusExporter.__instance is not None:
             raise Exception("This class is a singleton!")
         self._init_metrics()
         self.label_values = label_values
         PrometheusExporter.__instance = self
-    
+
     def _init_metrics(self):
         self.response_time = Histogram(
             name='response_time',
@@ -46,7 +47,7 @@ class PrometheusExporter(object):
             labelnames=self.LABELS,
             namespace=self.NAMESPACE,
         )
-    
+
     def observe(self, response_time, bytes_size):
         label_values = self.label_values
         if response_time != -1:

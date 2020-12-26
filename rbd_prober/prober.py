@@ -51,7 +51,7 @@ class RBDProber(threading.Thread):
     def _open_image(self, rados_connection):
         ioctx = rados_connection.open_ioctx(self.pool_name)
         return rbd.Image(ioctx, self.image_name)
-    
+
     def _init_prometheus_exporter(self):
         label_values = {
             'name': self.name,
@@ -61,7 +61,7 @@ class RBDProber(threading.Thread):
             'image': self.image_name,
         }
         self.prometheus_exporter = PrometheusExporter.getInstance(label_values)
-    
+
     def run(self):
         while True:
             logger.debug(f"sleep {self.interval}")
