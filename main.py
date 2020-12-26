@@ -1,13 +1,12 @@
 import yaml
 import argparse
 import time
-import logging
+from loguru import logger
 
 from rbd_prober.prober import RBDProber
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, help="config file path", default="config.yaml")
     args = parser.parse_args()
@@ -18,7 +17,7 @@ def main():
         interval = int(configs.get('interval'))
     
     while True:
-        logging.debug(f"sleep {interval}")
+        logger.debug(f"sleep {interval}")
         time.sleep(interval)
         rbd_prober.probe()
     

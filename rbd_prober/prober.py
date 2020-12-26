@@ -1,4 +1,4 @@
-import logging
+from loguru import logger
 from datetime import datetime
 
 import rados
@@ -46,7 +46,7 @@ class RBDProber(object):
         return rbd.Image(ioctx, self.image_name)
 
     def probe(self):
-        logging.debug("start probing")
+        logger.debug("start probing")
         response_time = -1
 
         try:
@@ -57,52 +57,52 @@ class RBDProber(object):
         except InternalError:
             return
         
-        logging.info(f"probbing finished response_time: {response_time}")
+        logger.info(f"probbing finished response_time: {response_time}")
 
     def write(self):
-        logging.debug("start write probe")
+        logger.debug("start write probe")
 
         try:
             self.image_ioctx.discard(0, self.prober.object_size)
         except Exception:
-            logging.exception("failed to discard previous write")
+            logger.exception("failed to discard previous write")
             raise InternalError()
 
         data = b'1' * self.prober.object_size
-        logging.debug("data created for write")
+        logger.debug("data created for write")
         start_time = datetime.now()
         try:
             n = self.image_ioctx.write(data, 0)
             end_time = datetime.now()
         except Exception:
-            logging.exception("failed to write to rbd image")
+            logger.exception("failed to write to rbd image")
             return -1
-        logging.debug(f"write finished data_size: {n}")
+        logger.debug(f"write finished data_size: {n}")
 
         response_time = (end_time - start_time).total_seconds()
-        logging.debug(f"response time calculated response_time: {response_time}")
+        logger.debug(f"response time calculated response_time: {response_time}")
         return response_time
 
     def read(self):
-        logging.debug("start read probe")
+        logger.debug("start read probe")
 
         data = b'1' * self.prober.object_size
         try:
             self.image_ioctx.write(data, 0)
         except Exception:
-            logging.exception("failed to prepare data to for read")
+            logger.exception("failed to prepare data to for read")
             raise InternalError()
-        logging.debug("data has been written to be read")
+        logger.debug("data has been written to be read")
 
         start_time = datetime.now()
         try:
             self.image_ioctx.read(0, self.prober.object_size)
             end_time = datetime.now()
         except Exception:
-            logging.exception("failed to read data from rbd image")
+            logger.exception("failed to read data from rbd image")
             return -1
-        logging.debug("read finished")
+        logger.debug("read finished")
 
         response_time = (end_time - start_time).total_seconds()
-        logging.debug(f"response time calculated response_time: {response_time}")
+        logger.debug(f"response time calculated response_time: {response_time}")
         return response_time
