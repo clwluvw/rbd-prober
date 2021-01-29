@@ -4,5 +4,5 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 loguru==0.5.3
 prometheus-client==0.9.0
-PyYAML==5.3.1
+PyYAML==5.4.1
 Werkzeug==1.0.1
