@@ -1,4 +1,4 @@
-FROM ceph/ceph:v15
+FROM ceph/ceph:v15.2.8
 
 RUN mkdir /rbd-prober
 
