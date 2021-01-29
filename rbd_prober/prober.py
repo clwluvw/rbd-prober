@@ -34,7 +34,9 @@ class RBDProber(threading.Thread):
         self.rbd_keyring_path = kwargs.get('rbd_keyring_path')
         self.monitors = kwargs.get('monitors')
 
+        logger.info("Connecting to Rados...")
         rados_connection = self._connect_to_rados()
+        logger.info(f"Opening image {self.image_name}...")
         self.image_ioctx = self._open_image(rados_connection)
 
         self._init_prometheus_exporter()
@@ -46,10 +48,12 @@ class RBDProber(threading.Thread):
             "rbd_cache": "false",
         })
         cluster.connect()
+        logger.info("Successfully connected to Rados")
         return cluster
 
     def _open_image(self, rados_connection):
         ioctx = rados_connection.open_ioctx(self.pool_name)
+        logger.info("Image successfully opened")
         return rbd.Image(ioctx, self.image_name)
 
     def _init_prometheus_exporter(self):
