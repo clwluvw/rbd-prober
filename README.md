@@ -42,5 +42,5 @@ To run it:
 
 ```bash
 pip3 install -r requirements.txt
-gunicorn -b 0.0.0.0:8000 main:app_dispatch --access-logfile - --error-logfile -
+gunicorn --chdir rbd_prober app:app_dispatch
 ```

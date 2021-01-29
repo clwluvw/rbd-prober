@@ -13,4 +13,4 @@ ENV LOGURU_LEVEL INFO
 
 EXPOSE 8000
 
-ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:8000", "main:app_dispatch", "--access-logfile", "-", "--error-logfile", "-" ]
+ENTRYPOINT [ "gunicorn", "--chdir", "rbd_prober", "app:app_dispatch" ]

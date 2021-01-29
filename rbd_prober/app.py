@@ -9,7 +9,7 @@ from rbd_prober.prober import RBDProber
 
 app = Flask(__name__)
 
-with open("config.yaml") as config_file:
+with open("../config.yaml") as config_file:
     configs = yaml.full_load(config_file)
     rbd_prober = RBDProber(**configs)
 
