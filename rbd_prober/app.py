@@ -15,15 +15,17 @@ with open("../config.yaml") as config_file:
 
 rbd_prober.start()
 
+
 @app.route('/')
 def home():
     return '''<html>
-		<head><title>RBD Prober</title></head>
-		<body>
-		<h1>RBD Prober</h1>
-		<p><a href="/metrics">Metrics</a></p>
-		</body>
-		</html>'''
+        <head><title>RBD Prober</title></head>
+        <body>
+        <h1>RBD Prober</h1>
+        <p><a href="/metrics">Metrics</a></p>
+        </body>
+        </html>'''
+
 
 app_dispatch = DispatcherMiddleware(app, {
     '/metrics': make_wsgi_app()
