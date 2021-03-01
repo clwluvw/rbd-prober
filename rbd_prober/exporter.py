@@ -41,9 +41,9 @@ class PrometheusExporter(object):
             labelnames=self.LABELS,
             namespace=self.NAMESPACE,
         )
-        self.prober_requests = Counter(
-            name='request_count',
-            documentation='Total request count',
+        self.prober_ops = Counter(
+            name='ops',
+            documentation='Total ops count',
             labelnames=self.LABELS,
             namespace=self.NAMESPACE,
         )
@@ -57,4 +57,4 @@ class PrometheusExporter(object):
 
         self.response_time.labels(**label_values).observe(response_time)
         self.bandwidth.labels(**label_values).inc(bytes_size)
-        self.prober_requests.labels(**label_values).inc()
+        self.prober_ops.labels(**label_values).inc()
