@@ -1,5 +1,7 @@
 # RBD Prober
 
+[![lint](https://github.com/clwluvw/rbd-prober/actions/workflows/lint.yml/badge.svg?branch=master)](https://github.com/clwluvw/rbd-prober/actions/workflows/lint.yml) [![test](https://github.com/clwluvw/rbd-prober/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/clwluvw/rbd-prober/actions/workflows/test.yml)
+
 RBD Prober is a monitoring software to monitor availability and performance of Rados Block Device (RBD) and exports them via HTTP for Prometheus consumption.
 
 ## Getting Started
