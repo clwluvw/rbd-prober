@@ -9,7 +9,7 @@ The code use the python binding of librados and librbd. When running the code th
 On debian based systems (apt) these may be:
 
 ```
-librbd-dev librados-dev
+librbd-dev python3-rbd librados-dev python3-rados
 ```
 
 On rpm based systems (dnf, yum, etc) these may be:
