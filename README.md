@@ -46,3 +46,11 @@ To run it:
 pip3 install -r requirements.txt
 gunicorn --chdir rbd_prober app:app_dispatch
 ```
+
+## Metrics
+
+| Metric                     | Notes
+|----------------------------|---------------------------------------
+| rbd_prober_response_time   | Prober response time in seconds
+| rbd_prober_bandwidth_total | Bytes has be written or read from RBD
+| rbd_prober_ops_total       | Total ops count
