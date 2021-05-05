@@ -10,6 +10,6 @@ pluggy==0.13.1
 prometheus-client==0.10.1
 py==1.10.0
 pyparsing==2.4.7
-pytest==6.2.3
+pytest==6.2.4
 PyYAML==5.4.1
 Werkzeug==1.0.1
