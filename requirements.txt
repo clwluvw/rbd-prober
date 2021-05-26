@@ -11,7 +11,7 @@ iniconfig==1.1.1
 itsdangerous==2.0.1
 Jinja2==3.0.1
 loguru==0.5.3
-MarkupSafe==2.0.0
+MarkupSafe==2.0.1
 packaging==20.9
 parse==1.19.0
 parse-type==0.5.2
