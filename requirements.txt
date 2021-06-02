@@ -16,7 +16,7 @@ packaging==20.9
 parse==1.19.0
 parse-type==0.5.2
 pluggy==0.13.1
-prometheus-client==0.10.1
+prometheus-client==0.11.0
 py==1.10.0
 pyparsing==2.4.7
 pytest==6.2.4
