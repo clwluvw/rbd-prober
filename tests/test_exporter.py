@@ -11,6 +11,7 @@ def get_sample_value(name, labels=None):
 
 
 def test_prometheus_exporter():
+    histogram_buckets = [0, 0.2, 0.5, 0.7, 1.0, 2.0, 5.0]
     label_values = {
         'name': 'test',
         'object_size': '4096',
@@ -19,7 +20,7 @@ def test_prometheus_exporter():
         'image': 'test_image',
         'status': 'success',
     }
-    prometheus_exporter = PrometheusExporter.getInstance(label_values)
+    prometheus_exporter = PrometheusExporter.getInstance(label_values, histogram_buckets)
     ops_before = get_sample_value('rbd_prober_ops_total', label_values)
     bandwidth_before = get_sample_value('rbd_prober_bandwidth_total', label_values)
     prometheus_exporter.observe(0.5, 4096)
@@ -36,7 +37,7 @@ def test_prometheus_exporter():
         'image': 'test_image',
         'status': 'fail',
     }
-    prometheus_exporter = PrometheusExporter.getInstance(label_values)
+    prometheus_exporter = PrometheusExporter.getInstance(label_values, histogram_buckets)
     ops_before = get_sample_value('rbd_prober_ops_total', label_values)
     bandwidth_before = get_sample_value('rbd_prober_bandwidth_total', label_values)
     prometheus_exporter.observe(-1, 4096)
