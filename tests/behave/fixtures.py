@@ -91,7 +91,10 @@ def create_rbd_prober_config(context):
         'rbd_keyring_path': context.ceph_keyring.name,
         'monitors': [
             '192.168.3.2'
-        ]
+        ],
+        'histogram_buckets': [
+            0, 0.2, 0.5, 0.7, 1.0, 2.0, 5.0
+        ],
     }
     context.rbd_prober_config_file = tempfile.NamedTemporaryFile()
     with open(context.rbd_prober_config_file.name, 'w') as f:
