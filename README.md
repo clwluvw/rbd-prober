@@ -38,6 +38,14 @@ monitors: # Ceph monitor ips
   - 10.0.0.1
   - 10.0.0.2
   - 10.0.0.3
+histogram_buckets: # Histogram Buckets for rbd_response_time metric
+  - 0
+  - 0.2
+  - 0.5
+  - 0.7
+  - 1.0
+  - 2.0
+  - 5.0
 ```
 
 To run it:
