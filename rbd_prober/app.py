@@ -4,16 +4,20 @@ from flask import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
 
-from rbd_prober.prober import RBDProber
+from rbd_prober.prober import RBDProber, PrometheusExporter
 
 
 app = Flask(__name__)
 
 with open("../config.yaml") as config_file:
     configs = yaml.full_load(config_file)
-    rbd_prober = RBDProber(**configs)
 
-rbd_prober.start()
+    # init exporter metrics
+    PrometheusExporter.getInstance().init_metrics(configs['histogram_buckets'])
+
+    for config in configs['probs']:
+        rbd_prober = RBDProber(**config)
+        rbd_prober.start()
 
 
 @app.route('/')

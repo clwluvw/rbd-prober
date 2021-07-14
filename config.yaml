@@ -1,21 +1,42 @@
-name: "fsw1"
-interval: 5
-prober:
-  object_size: 4096
-  type: "write"
-pool_name: "watchdog"
-image_name: "foo"
-rbd_user: "watchdog"
-rbd_keyring_path: "/etc/ceph/ceph.client.watchdog.keyring"
-monitors:
-  - 192.168.51.181
-  - 192.168.51.182
-  - 192.168.51.183
 histogram_buckets:
-  - 0
-  - 0.2
+  - 0.005
+  - 0.01
+  - 0.025
+  - 0.05
+  - 0.075
+  - 0.1
+  - 0.25
   - 0.5
-  - 0.7
+  - 0.75
   - 1.0
-  - 2.0
+  - 2.5
   - 5.0
+  - 7.5
+  - 10.0
+probs:
+  - name: "write_test"
+    interval: 5
+    prober:
+      object_size: 4096
+      type: "write"
+    pool_name: "watchdog"
+    image_name: "write_foo"
+    rbd_user: "watchdog"
+    rbd_keyring_path: "/etc/ceph/ceph.client.watchdog.keyring"
+    monitors:
+      - 10.0.0.1
+      - 10.0.0.2
+      - 10.0.0.3
+  - name: "read_test"
+    interval: 5
+    prober:
+      object_size: 4096
+      type: "read"
+    pool_name: "watchdog"
+    image_name: "read_foo"
+    rbd_user: "watchdog"
+    rbd_keyring_path: "/etc/ceph/ceph.client.watchdog.keyring"
+    monitors:
+      - 10.0.0.1
+      - 10.0.0.2
+      - 10.0.0.3

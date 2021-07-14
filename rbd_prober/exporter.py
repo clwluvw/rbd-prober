@@ -15,19 +15,17 @@ class PrometheusExporter(object):
     NAMESPACE = 'rbd_prober'
 
     @staticmethod
-    def getInstance(label_values, histogram_buckets):
+    def getInstance():
         if PrometheusExporter.__instance is None:
-            PrometheusExporter(label_values, histogram_buckets)
+            PrometheusExporter()
         return PrometheusExporter.__instance
 
-    def __init__(self, label_values, histogram_buckets, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         if PrometheusExporter.__instance is not None:
             raise Exception("This class is a singleton!")
-        self._init_metrics(histogram_buckets)
-        self.label_values = label_values
         PrometheusExporter.__instance = self
 
-    def _init_metrics(self, histogram_buckets):
+    def init_metrics(self, histogram_buckets):
         histogram_buckets.append(INF)
         self.response_time = Histogram(
             name='response_time',
@@ -49,8 +47,7 @@ class PrometheusExporter(object):
             namespace=self.NAMESPACE,
         )
 
-    def observe(self, response_time, bytes_size):
-        label_values = self.label_values
+    def observe(self, response_time, bytes_size, label_values):
         if response_time != -1:
             label_values['status'] = 'success'
         else:
