@@ -39,7 +39,7 @@ class RBDProber(threading.Thread):
         logger.info(f"Opening image {self.image_name}...")
         self.image_ioctx = self._open_image(rados_connection)
 
-        self._init_prometheus_exporter(kwargs.get('histogram_buckets'))
+        self._init_prometheus_exporter()
 
     def _connect_to_rados(self):
         cluster = rados.Rados(rados_id=self.rbd_user, conf={
@@ -56,15 +56,15 @@ class RBDProber(threading.Thread):
         logger.info("Image successfully opened")
         return rbd.Image(ioctx, self.image_name)
 
-    def _init_prometheus_exporter(self, histogram_buckets):
-        label_values = {
+    def _init_prometheus_exporter(self):
+        self.label_values = {
             'name': self.name,
             'object_size': self.prober.object_size,
             'type': self.prober.type,
             'pool': self.pool_name,
             'image': self.image_name,
         }
-        self.prometheus_exporter = PrometheusExporter.getInstance(label_values, histogram_buckets)
+        self.prometheus_exporter = PrometheusExporter.getInstance()
 
     def run(self):
         while True:
@@ -84,7 +84,7 @@ class RBDProber(threading.Thread):
         except InternalError:
             return
 
-        self.prometheus_exporter.observe(response_time, self.prober.object_size)
+        self.prometheus_exporter.observe(response_time, self.prober.object_size, self.label_values)
 
     def write(self):
         logger.debug("start write probe")

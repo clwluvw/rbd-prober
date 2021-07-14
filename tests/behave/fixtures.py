@@ -60,7 +60,10 @@ def prepare_rbd(context):
     )
     # create rbd image
     context.ceph_container.exec_run(
-        cmd="rbd create foo --size 4096 --image-feature layering -p watchdog"
+        cmd="rbd create write_foo --size 4096 --image-feature layering -p watchdog"
+    )
+    context.ceph_container.exec_run(
+        cmd="rbd create read_foo --size 4096 --image-feature layering -p watchdog"
     )
     # create watchdog cephx user
     res = context.ceph_container.exec_run(
@@ -79,18 +82,37 @@ def prepare_rbd(context):
 @fixture
 def create_rbd_prober_config(context):
     config = {
-        'name': 'fsw1',
-        'interval': 1,
-        'prober': {
-            'object_size': 4096,
-            'type': "write",
-        },
-        'pool_name': 'watchdog',
-        'image_name': 'foo',
-        'rbd_user': 'watchdog',
-        'rbd_keyring_path': context.ceph_keyring.name,
-        'monitors': [
-            '192.168.3.2'
+        'probs': [
+            {
+                'name': 'write_test',
+                'interval': 1,
+                'prober': {
+                    'object_size': 4096,
+                    'type': "write",
+                },
+                'pool_name': 'watchdog',
+                'image_name': 'write_foo',
+                'rbd_user': 'watchdog',
+                'rbd_keyring_path': context.ceph_keyring.name,
+                'monitors': [
+                    '192.168.3.2'
+                ],
+            },
+            {
+                'name': 'read_test',
+                'interval': 1,
+                'prober': {
+                    'object_size': 4096,
+                    'type': "read",
+                },
+                'pool_name': 'watchdog',
+                'image_name': 'read_foo',
+                'rbd_user': 'watchdog',
+                'rbd_keyring_path': context.ceph_keyring.name,
+                'monitors': [
+                    '192.168.3.2'
+                ],
+            }
         ],
         'histogram_buckets': [
             0, 0.2, 0.5, 0.7, 1.0, 2.0, 5.0

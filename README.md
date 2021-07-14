@@ -25,19 +25,6 @@ librbd-devel librados-devel
 RBD Prober needs a `config.yaml` file that provides the following information to be run.
 
 ```yaml
-name: "write-test" # name of the test
-interval: 5 # seconds
-prober:
-  object_size: 4096 # data size to be written or read from RBD image
-  type: "write" # type of the operation write OR read
-pool_name: "watchdog" # Ceph pool name that images is exists in
-image_name: "foo" # Image name that data will be write or read from
-rbd_user: "watchdog" # cephx user that has access to the image
-rbd_keyring_path: "/etc/ceph/ceph.keyring" # path of the rbd_user keyring
-monitors: # Ceph monitor ips
-  - 10.0.0.1
-  - 10.0.0.2
-  - 10.0.0.3
 histogram_buckets: # Histogram Buckets for rbd_prober_response_time metric
   - 0
   - 0.2
@@ -46,6 +33,20 @@ histogram_buckets: # Histogram Buckets for rbd_prober_response_time metric
   - 1.0
   - 2.0
   - 5.0
+probs: # list of probers
+  - name: "write-test" # name of the test
+    interval: 5 # seconds
+    prober:
+      object_size: 4096 # data size to be written or read from RBD image
+      type: "write" # type of the operation write OR read
+    pool_name: "watchdog" # Ceph pool name that images is exists in
+    image_name: "foo" # Image name that data will be write or read from
+    rbd_user: "watchdog" # cephx user that has access to the image
+    rbd_keyring_path: "/etc/ceph/ceph.keyring" # path of the rbd_user keyring
+    monitors: # Ceph monitor ips
+      - 10.0.0.1
+      - 10.0.0.2
+      - 10.0.0.3
 ```
 
 To run it:
