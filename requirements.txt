@@ -3,7 +3,7 @@ behave==1.2.6
 certifi==2021.5.30
 chardet==4.0.0
 click==8.0.1
-docker==5.0.0
+docker==5.0.2
 Flask==2.0.1
 gunicorn==20.1.0
 idna==3.2
