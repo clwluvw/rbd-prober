@@ -15,7 +15,7 @@ MarkupSafe==2.0.1
 packaging==21.0
 parse==1.19.0
 parse-type==0.5.2
-pluggy==0.13.1
+pluggy==1.0.0
 prometheus-client==0.11.0
 py==1.10.0
 pyparsing==2.4.7
