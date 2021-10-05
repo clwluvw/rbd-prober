@@ -1,13 +1,13 @@
-from loguru import logger
 from datetime import datetime
 import threading
 import time
 
+from loguru import logger
 import rados
 import rbd
 
-from .exceptions import InternalError
-from .exporter import PrometheusExporter
+from rbd_prober.exceptions import InternalError
+from rbd_prober.exporter import PrometheusExporter
 
 
 class Prober(object):

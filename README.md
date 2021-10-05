@@ -25,6 +25,8 @@ librbd-devel librados-devel
 RBD Prober needs a `config.yaml` file that provides the following information to be run.
 
 ```yaml
+exporter_host: 0.0.0.0 # listen address
+exporter_port: 8000 # listen port
 histogram_buckets: # Histogram Buckets for rbd_prober_response_time metric
   - 0
   - 0.2
@@ -53,7 +55,7 @@ To run it:
 
 ```bash
 pip3 install -r requirements.txt
-gunicorn --chdir rbd_prober app:app_dispatch
+python3 app.py
 ```
 
 ## Metrics

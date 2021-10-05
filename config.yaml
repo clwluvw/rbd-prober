@@ -1,3 +1,5 @@
+exporter_host: 0.0.0.0
+exporter_port: 8000
 histogram_buckets:
   - 0.005
   - 0.01

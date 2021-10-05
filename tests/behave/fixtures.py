@@ -33,7 +33,7 @@ def docker_network(context):
 @fixture
 def ceph_cluster(context):
     context.ceph_container = context.client.containers.run(
-        image="ceph/daemon:v6.0.3-stable-6.0-pacific-centos-8",
+        image="ceph/daemon:v6.0.4-stable-6.0-pacific-centos-8",
         command="demo",
         environment={
             "DEMO_DAEMONS": "osd",
@@ -117,6 +117,8 @@ def create_rbd_prober_config(context):
         'histogram_buckets': [
             0, 0.2, 0.5, 0.7, 1.0, 2.0, 5.0
         ],
+        'exporter_host': '0.0.0.0',
+        'exporter_port': 8000,
     }
     context.rbd_prober_config_file = tempfile.NamedTemporaryFile()
     with open(context.rbd_prober_config_file.name, 'w') as f:

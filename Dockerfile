@@ -1,4 +1,4 @@
-FROM ceph/ceph:v16.2.4
+FROM ceph/ceph:v16.2.5
 
 RUN mkdir /rbd-prober
 
@@ -13,4 +13,4 @@ ENV LOGURU_LEVEL INFO
 
 EXPOSE 8000
 
-ENTRYPOINT [ "gunicorn", "--chdir", "rbd_prober", "app:app_dispatch" ]
+ENTRYPOINT [ "python3", "app.py" ]
