@@ -2,6 +2,7 @@ from wsgiref.simple_server import make_server
 import yaml
 
 from prometheus_client import make_wsgi_app
+from loguru import logger
 
 from rbd_prober.prober import RBDProber, PrometheusExporter
 
@@ -59,4 +60,5 @@ with open("./config.yaml") as config_file:
 
 app = wsgi()
 httpd = make_server(exporter_host, exporter_port, app)
+logger.info(f"Listening on address: {exporter_host}:{exporter_port}")
 httpd.serve_forever()
