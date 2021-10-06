@@ -1,5 +1,7 @@
 FROM ceph/ceph:v16.2.5
 
+ENV PYTHONUNBUFFERED 1
+
 RUN mkdir /rbd-prober
 
 WORKDIR /rbd-prober
