@@ -2,7 +2,7 @@ attrs==21.2.0
 behave==1.2.6
 certifi==2021.5.30
 charset-normalizer==2.0.6
-docker==5.0.2
+docker==5.0.3
 idna==3.2
 iniconfig==1.1.1
 loguru==0.5.3
