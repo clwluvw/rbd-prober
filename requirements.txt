@@ -14,7 +14,7 @@ prometheus-client==0.11.0
 py==1.10.0
 pyparsing==2.4.7
 pytest==6.2.5
-PyYAML==5.4.1
+PyYAML==6.0
 requests==2.26.0
 six==1.16.0
 toml==0.10.2
