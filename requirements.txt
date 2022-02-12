@@ -5,7 +5,7 @@ charset-normalizer==2.0.7
 docker==5.0.3
 idna==3.3
 iniconfig==1.1.1
-loguru==0.5.3
+loguru==0.6.0
 packaging==21.3
 parse==1.19.0
 parse-type==0.6.0
