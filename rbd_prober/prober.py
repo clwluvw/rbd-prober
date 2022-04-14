@@ -1,8 +1,8 @@
 from datetime import datetime
 import threading
+import logging
 import time
 
-from loguru import logger
 import rados
 import rbd
 
@@ -34,9 +34,9 @@ class RBDProber(threading.Thread):
         self.rbd_keyring_path = kwargs.get('rbd_keyring_path')
         self.monitors = kwargs.get('monitors')
 
-        logger.info("Connecting to Rados...")
+        logging.info("Connecting to Rados...")
         rados_connection = self._connect_to_rados()
-        logger.info(f"Opening image {self.image_name}...")
+        logging.info(f"Opening image {self.image_name}...")
         self.image_ioctx = self._open_image(rados_connection)
 
         self._init_prometheus_exporter()
@@ -48,12 +48,12 @@ class RBDProber(threading.Thread):
             "rbd_cache": "false",
         })
         cluster.connect()
-        logger.info("Successfully connected to Rados")
+        logging.info("Successfully connected to Rados")
         return cluster
 
     def _open_image(self, rados_connection):
         ioctx = rados_connection.open_ioctx(self.pool_name)
-        logger.info("Image successfully opened")
+        logging.info("Image successfully opened")
         return rbd.Image(ioctx, self.image_name)
 
     def _init_prometheus_exporter(self):
@@ -68,12 +68,12 @@ class RBDProber(threading.Thread):
 
     def run(self):
         while True:
-            logger.debug(f"sleep {self.interval}")
+            logging.debug(f"sleep {self.interval}")
             time.sleep(self.interval)
             self.probe()
 
     def probe(self):
-        logger.debug("start probing")
+        logging.debug("start probing")
         response_time = -1
 
         try:
@@ -87,51 +87,51 @@ class RBDProber(threading.Thread):
         self.prometheus_exporter.observe(response_time, self.prober.object_size, self.label_values)
 
     def write(self):
-        logger.debug("start write probe")
+        logging.debug("start write probe")
 
         try:
             self.image_ioctx.discard(0, self.prober.object_size)
         except Exception:
-            logger.exception("failed to discard previous write")
+            logging.exception("failed to discard previous write")
             raise InternalError()
 
         data = b'1' * self.prober.object_size
-        logger.debug("data created for write")
+        logging.debug("data created for write")
         start_time = datetime.now()
         try:
             n = self.image_ioctx.write(data, 0)
             end_time = datetime.now()
         except Exception:
-            logger.exception("failed to write to rbd image")
+            logging.exception("failed to write to rbd image")
             return -1
-        logger.debug(f"write finished data_size: {n}")
+        logging.debug(f"write finished data_size: {n}")
 
         response_time = (end_time - start_time).total_seconds()
-        logger.debug(f"response time calculated \
+        logging.debug(f"response time calculated \
                     response_time: {response_time}")
         return response_time
 
     def read(self):
-        logger.debug("start read probe")
+        logging.debug("start read probe")
 
         data = b'1' * self.prober.object_size
         try:
             self.image_ioctx.write(data, 0)
         except Exception:
-            logger.exception("failed to prepare data to for read")
+            logging.exception("failed to prepare data to for read")
             raise InternalError()
-        logger.debug("data has been written to be read")
+        logging.debug("data has been written to be read")
 
         start_time = datetime.now()
         try:
             self.image_ioctx.read(0, self.prober.object_size)
             end_time = datetime.now()
         except Exception:
-            logger.exception("failed to read data from rbd image")
+            logging.exception("failed to read data from rbd image")
             return -1
-        logger.debug("read finished")
+        logging.debug("read finished")
 
         response_time = (end_time - start_time).total_seconds()
-        logger.debug(f"response time calculated \
+        logging.debug(f"response time calculated \
                     response_time: {response_time}")
         return response_time

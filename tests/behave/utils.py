@@ -1,8 +1,8 @@
 import requests
 import requests.exceptions
-from loguru import logger
 
 import time
+import logging
 import multiprocessing
 
 
@@ -15,7 +15,7 @@ def container_exec_with_timeout(func, timeout, *args):
     p.join(timeout)
     if p.is_alive():
         p.kill()
-        logger.error(args[0].logs())
+        logging.error(args[0].logs())
         exit(1)
 
 
