@@ -27,6 +27,7 @@ RBD Prober needs a `config.yaml` file that provides the following information to
 ```yaml
 exporter_host: 0.0.0.0 # listen address
 exporter_port: 8000 # listen port
+log_level: info # log level (info, debug, error, warn)
 histogram_buckets: # Histogram Buckets for rbd_prober_response_time metric
   - 0
   - 0.2

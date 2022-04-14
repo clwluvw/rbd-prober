@@ -1,6 +1,5 @@
 behave==1.2.6
 docker==5.0.3
-loguru==0.6.0
 prometheus-client==0.13.1
 pytest==6.2.5
 PyYAML==6.0

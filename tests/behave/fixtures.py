@@ -82,6 +82,7 @@ def prepare_rbd(context):
 @fixture
 def create_rbd_prober_config(context):
     config = {
+        'log_level': 'debug',
         'probs': [
             {
                 'name': 'write_test',
