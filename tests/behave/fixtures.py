@@ -33,7 +33,7 @@ def docker_network(context):
 @fixture
 def ceph_cluster(context):
     context.ceph_container = context.client.containers.run(
-        image="ceph/daemon:v6.0.4-stable-6.0-pacific-centos-8",
+        image="quay.io/ceph/daemon:v6.0.7-stable-6.0-pacific-centos-stream8",
         command="demo",
         environment={
             "DEMO_DAEMONS": "osd",

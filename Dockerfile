@@ -1,4 +1,4 @@
-FROM ceph/ceph:v16.2.5
+FROM quay.io/ceph/ceph:v16.2.7
 
 ENV PYTHONUNBUFFERED 1
 
