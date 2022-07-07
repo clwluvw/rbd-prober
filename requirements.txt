@@ -4,4 +4,4 @@ prometheus-client==0.14.1
 pytest==6.2.5
 PyYAML==6.0
 requests==2.27.1
-urllib3==1.26.9
+urllib3==1.26.10
