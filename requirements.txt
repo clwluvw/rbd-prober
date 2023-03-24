@@ -3,5 +3,5 @@ docker==5.0.3
 prometheus-client==0.16.0
 pytest==6.2.5
 PyYAML==6.0
-requests==2.27.1
+requests==2.28.2
 urllib3==1.26.15
