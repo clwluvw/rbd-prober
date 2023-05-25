@@ -1,6 +1,6 @@
 behave==1.2.6
 docker==5.0.3
-prometheus-client==0.16.0
+prometheus-client==0.17.0
 pytest==6.2.5
 PyYAML==6.0
 requests==2.27.1
